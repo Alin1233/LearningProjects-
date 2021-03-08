@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <div class="d-flex justify-content-center">
+        
+        <ul class="list-group">
+            <h1>Your Watchlist</h1>
+        {% for watch in watchlist %}
+            <li class="list-group-item">
+                <a href="{% url 'page' pk=watch.listing.id %}" value="{{watch.listing.id}}">{{ watch.listing.title}}</a>
+            </li>    
+        {% endfor %}
+        </ul>
+    </div>
+   
+{% endblock  %}

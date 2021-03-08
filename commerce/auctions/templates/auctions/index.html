@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 class="text-center">Active Listings</h2>
+
+    {% for listing in listings %}
+    <div class="d-flex justify-content-center">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="{% url 'page' pk=listing.id %}" value="{{listing.id}}">{{listing.title}}</a>
+            </li>
+            <li class="list-group-item">
+                {% if listing.link %}
+                    <img src="{{listing.link}}" alt ="Photo of {{listing.title}}" width="600" height="300">
+                {% else %}
+                    No photo
+                {% endif %}
+            </li >
+            <li class="list-group-item list-group-item-warning">
+                Initial price: {{listing.price}} $
+            </li>
+            <li class="list-group-item list-group-item-warning">
+                {% for bid in bids %}
+                    {% if bid.listing.title == listing.title  %}
+                        Current Price: {{bid.bid}} $
+                    {% endif %}
+                {% endfor %}    
+            </li>
+            <li class="list-group-item list-group-item-info">
+                Description: {{ listing.description }}
+            </li>
+            <li class="list-group-item list-group-item-info">
+                Category: <a href="{% url 'cat' %}">{{ listing.category }}</a> 
+            </li>
+        </ul>
+    </div>    
+    {% endfor %}
+{% endblock %}

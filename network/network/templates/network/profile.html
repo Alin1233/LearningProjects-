@@ -1,0 +1,59 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="container">
+        
+        <h1>Profile page of: {{author.username}}</h1>
+        <h1>{{author.username}}: follows {{following}} other users</h1>
+        <h1>{{author.username}}: is beaing followed by {{followers}} users </h1>
+        <form action = "{% url 'profile' id=author.id %}" method="POST">
+            {% csrf_token %}
+            {% if bt == 1  %}
+            <span>
+                <button  type="submit" value="f" name="f">Follow!</button>
+            </span>
+                
+            {% elif bt == 2 %}
+            <span>
+                <button  type="submit" value="u" name="u">Unllow!</button>
+            </span>
+            {% endif %}
+        </form>
+    </div>
+    
+
+    <div>
+        {% for post in page_obj reversed  %}
+            <div class="posts">
+                <div class="container">
+                    <div class="border border-primary">
+                    <span>Post made by:<a href="{% url 'profile' id=post.author.id   %}" id="author"> {{post.author}}</a></span>
+                    <span>{{post.date_time}}</span>
+                   <p id="text+{{post.pk}}" class ="post_txt">{{post.text}}</p>
+                   <span class="like_nr" data-id="{{post.pk}}" id="{{post.pk}}"></span>
+                   <button class="like" data-id="{{post.pk}}" id="bt+{{post.pk}}" >Like me!</button>
+                {% if bt == 0 %}
+                    <span>
+                        <button  class="edit"  value="{{post.pk}}">Edit!</button>
+                    </span> 
+                        <form action = "{% url 'edit' id=post.pk  %}" method="POST">
+                            {% csrf_token %}
+                            <div id="textarea+{{post.pk}}">
+                            </div>
+                        </form>
+                       
+                {%  endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div>
+        
+    </div>
+
+    
+    <script src="{% static 'network/profile.js' %}"></script>
+    <script src="{% static 'network/like.js' %}"></script>
+{% endblock %}

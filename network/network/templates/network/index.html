@@ -1,0 +1,34 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    
+    <div id="new_post">
+        <form action = "{% url 'index' %}" id="form" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <button type="submit" class="btn btn-primary">submit</button>
+        </form>
+    </div>
+    <button id="bt_post" class="btn btn-primary">Make a New post</button>
+    <script src="{% static 'network/index.js' %}"></script>
+    <script src="{% static 'network/like.js' %}"></script>
+
+    <div>
+        {% for post in page_obj %}
+            <div class="posts">
+                <div class="container">
+                    <div class="border border-primary">
+                        <span>Post made by:<a href="{% url 'profile' id=post.author.id   %}" id="author"> {{post.author}}</a></span>
+                        <span>On:{{post.date_time}}</span>
+                        <p id='text'>{{post.text}}</p>
+                        <span class="like_nr" data-id="{{post.id}}" id="{{post.id}}"></span>
+                        <button class="like" data-id="{{post.id}}" id="bt+{{post.id}}" >Like me!</button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    
+{% endblock %}

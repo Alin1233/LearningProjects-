@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<div class="d-flex justify-content-center"> 
+    <ul class="list-group">
+        <h1>Active Categories</h1>
+        {% for c in cat %}
+        <form action = "{% url 'cat'  %}" method="POST">
+            {% csrf_token %}
+            <input type="text" value="{{c}}" name="cat" hidden>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary" value="{{c}}" >{{c}}</button>
+            </div>
+        </form>
+    </ul>
+</div>
+        {% endfor %}
+{% endblock  %}

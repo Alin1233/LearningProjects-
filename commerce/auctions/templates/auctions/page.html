@@ -1,0 +1,105 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+<div class="d-flex justify-content-center">
+<ul class="list-group">
+    <li class="list-group-item">
+        {{ listing.title }}
+    </li>
+    <li class="list-group-item">
+        {% if listing.link %}
+            <img src="{{listing.link}}" alt ="Photo of {{listing.title}}" width="600" height="300">
+        {% else %}
+            No photo
+        {% endif %}
+    </li class="list-group-item">
+    <li class="list-group-item list-group-item-warning">
+        Initial price: {{listing.price}}
+    </li>
+    <li class="list-group-item list-group-item-warning">
+        Current price : {{bid.bid}}
+    </li>
+    <li class="list-group-item list-group-item-info">
+        Description: {{ listing.description }}
+    </li>
+    <li class="list-group-item list-group-item-info">
+        Category: {{ listing.category }}
+    </li>
+    <li class="list-group-item">
+        {% if comments %}
+            Comments:
+            <ul class="list-group">
+            {% for com in comments %}
+                <li class="list-group-item">{{com.comment}}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            No comments
+        {% endif %}
+
+    </li>
+    <li class="list-group-item">
+        <div class="form-group">
+        <form action = "{% url 'listing_actions' pk=listing.id %}" method="POST">
+            {% csrf_token %}
+
+            
+
+            {% if user.is_authenticated and listing.status == True %}
+            <li class="list-group-item list-group-item-success">
+                <input class="form-control" type="number"  name="bid" min="{{bid.bid}}"  placeholder="Place a new bid" min="{{bid.bid}}">
+            </li>
+                <li class="list-group-item list-group-item-success">
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-success" type="submit" value="new_bid" name='new_bid'>Submit bid</button>
+                    </div>
+                </li>
+                
+            {% endif %}
+
+            {% if user.username == bid.author.username and listing.status == False %}
+            <div class="d-flex justify-content-center">
+                <li class="list-group-item list-group-item-danger">
+                    <h1 >U wonnnnnn!!!</h1>
+                </li>
+            </div>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li class="list-group-item list-group-item-success">
+                <input  class="form-control " type="text" name="com" placeholder="Type a new com" >
+            </li>    
+                <li class="list-group-item list-group-item-success">
+                    <div class="d-flex justify-content-center">
+                <button class="btn btn-success" type="submit" value="new_com" name="new_com">Submit Com</button>
+                    </div>
+                </li>
+            
+            {% endif %}
+            {% if user.username == listing.author.username and listing.status == True %}
+            <li class="list-group-item list-group-item-success">
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-success" type="submit" value="close"  name='close'>Close Listing!</button>
+                </div>
+            </li>
+            {% endif %}
+            
+            {% if watchlist.user.username == user.username and watchlist.listing.title == listing.title %}
+            <li class="list-group-item list-group-item-success">
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-success" type="submit" value="rem_watch" name='rem_watch'>Remove from watchlist</button>
+                </div>
+            </li>    
+                
+            {% elif user.is_authenticated %}
+            <li class="list-group-item list-group-item-success">
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-success" type="submit" value="add_watch" name='add_watch'>Add to watchlist</button>
+                </div>
+            </li> 
+
+            {% endif %}
+        </div>    
+        </form>
+    </li>
+</ul>
+</div>
+{% endblock %}

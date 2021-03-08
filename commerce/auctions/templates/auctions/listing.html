@@ -1,0 +1,28 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="d-flex justify-content-center">
+     <div class="form-group">
+          <form action="{% url 'listing' %}" method="POST">
+          {%  csrf_token %}
+          <div class="form-control">
+               Title: {{ forms.title }}
+          </div>
+          <div class="form-control">
+               Price: {{ forms.price }}$
+          </div>
+          <div class="form-control">
+               Photo link: {{ forms.link }}
+          </div>
+          <div class="form-control">
+               Category: {{ forms.category }}
+          </div>
+          <div >
+               Description:{{ forms.description }}
+          </div>
+          <input type="submit" value="Post">
+          
+          </form>
+     </div>
+</div>
+{% endblock %}
